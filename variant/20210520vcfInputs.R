@@ -1,5 +1,9 @@
 #!/usr/bin/env Rscript
 
+### this script cataloges all sequenced libraries
+### creates symbolic links of vcfs and annotates
+
+
 
 ### loading all required libraries
 

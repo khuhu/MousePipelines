@@ -1,4 +1,7 @@
-### this script should read in all annotation files (annoFiles) and then output one large table per report
+#!/usr/bin/env Rscript
+
+
+### this script should read in all annotation files (multiAnno) and then output one large table per report
 ### loading required libraries
 
 library(optparse)

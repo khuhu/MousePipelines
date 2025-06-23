@@ -11,3 +11,6 @@ Note: most of the code can be found in directory with original file names listed
 /mnt/DATA6/mouseData/variant.Dockerfile3
 ```
 
+Sub-directory is for force calling genotyping SNPs with TVC. Separate set of VCFs used exclusively for mouse strain estimation via ADMIXTURE. (Annotation automated, but not calling script)
+
+
