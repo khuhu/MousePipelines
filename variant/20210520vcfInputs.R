@@ -1,15 +1,25 @@
 #!/usr/bin/env Rscript
 
+
+### loading all required libraries
+
 library(jsonlite);
 library(stringr);
 library(vcfR);
 
+
+### paths to sequencing data
+
 pathToZeus <- "/mnt/DATA6/Yoda_data_dump/"
 pathToYoda <- "/mnt/DATA6/Yoda_data_dump/";
 pathToEros <- "/mnt/DATA3/eros_tmp/";
-#pathToCetus <- "/mnt/DATA3/cetus_data_dump/"
 
-#listofSequencers <- c(pathToYoda, pathToEros, pathToCetus);
+
+
+
+### cataloging all custom panels we sequence (unique bed file)
+### different bed ID's of the same panel shouldn't matter
+
 listofSequencers <- c(pathToEros, pathToZeus, pathToYoda);
 
 listOfBeds <- NULL
@@ -30,13 +40,14 @@ if (length(which(duplicated(listOfBeds$directories))) > 0) {
   listOfBeds <- listOfBeds[-which(duplicated(listOfBeds$directories)), ]
 }
 colnames(listOfBeds) <- c("directories", "bed")
-### can intserct the list of directories that use different mouse bed files
+
+
+### labeling beds based on human or mouse (add new bed files here)
+
 mouseIndices <- grep("IAD124056_167_Designed.gc.bed", listOfBeds$bed)
 mouseIndices2 <- grep("IAD202670_167_Designed.gc.bed", listOfBeds$bed)
 humanIndice <- grep("OCAPlus.20191203.designed.gc.bed", listOfBeds$bed)
 humanIndice2 <- grep("4477685_CCP_designed.gc.bed", listOfBeds$bed)
-### hoenstly don't know why I did 80 specifcally
-# humanIndice2 <- humanIndice2[-which(humanIndice2 == 80)]
 humanIndice3 <- grep("IAD203665_173_Designed.gc.bed", listOfBeds$bed)
 humanIndice4 <- grep("WG_IAD127899.20170720.designed.gc.bed", listOfBeds$bed)
 humanIndice5 <- grep("CCP.gc.bed", listOfBeds$bed)
@@ -45,6 +56,9 @@ allIndices <- c(mouseIndices, mouseIndices2, humanIndice, humanIndice2, humanInd
 mouseBeds <- listOfBeds[allIndices,]
 mouseBeds$reports <- sapply(mouseBeds$directories, FUN = function(x) unlist(str_split(x, "/"))[5])
 mouseBeds$snakemakeInput <- str_remove(mouseBeds$bed, "local_beds.*")
+
+
+### processing and cataloging each library sequenced
 
 summaryFileList <- NULL
 variantDirList <- NULL
@@ -68,9 +82,6 @@ for (i in mouseBeds$directories) {
 
 print("getting variant list - done")
 
-# 20210516: KH quick fix for reports not listed in mouse beds (?)
-#summaryFileList <- summaryFileList[grep(paste(mouseBeds$directories, collapse = "|"), summaryFileList)]
-
 print(summaryFileList)
 mouseBeds$summaryFile <- summaryFileList
 mouseBeds$idxFile <- paste0(mouseBeds$reports, "/", "idx.txt")
@@ -85,7 +96,7 @@ mouseBeds$bed2 <- str_remove(mouseBeds$bed, ".*local_beds\\/")
 
 
 ### create table for each report I can iterate for file copying
-### just use if file exist function for each entry of the should be vcf file
+### either copies or symbolic links
 
 cpTable <- NULL
 for (i in seq_along(mouseBeds$summaryFile)) {
@@ -132,8 +143,7 @@ if(length(grep("None", cpTable$toVcf)) > 0){
 
 print("finished list of input for copy - done")
 
-### from list above I iteratre and make a if exist function
-### setdir of newMousePipeline - separate dir for vcfs?
+### from list above I iterate and make a if exist function
 
 setwd("/mnt/DATA6/mouseData/vcfs/")
 
@@ -145,7 +155,6 @@ for (i in seq_along(mouseBeds$reports)) {
 }
 
 ### to preemptively remove RNA vcf calls
-i <- 1769
 for (i in 1:nrow(cpTable)) {
   print(i)
   tmpVcf <- vcfR::read.vcfR(cpTable$fromVcf[i]);
@@ -174,6 +183,8 @@ for (i in 1:nrow(mouseBeds)) {
   setwd("/mnt/DATA6/mouseData/vcfs/")
 }
 
+### formatting file names for table used by Snakemake
+
 partFullPath <- getwd()
 vcfList <- system('find -maxdepth 2 -name *vcf.gz | grep -v "norm"', intern = TRUE)
 vcfList <- sub(vcfList, pattern = "\\.", replacement = partFullPath)
@@ -201,7 +212,9 @@ write.table(tableForSnakemakeHg, "/mnt/DATA6/mouseData/humanVcfTable.txt", sep =
             quote = FALSE, row.names = FALSE, col.names = TRUE)
 
 
-### problem for humans is reports with both DNA and RNA, there are still vcf files 
+
+### future works:
+### problem for humans is reports with both DNA and RNA, there are still vcf files (for RNA)
 ### created for them, but they break bcftools b/c the amplicons are not found on ref hg19
 
 

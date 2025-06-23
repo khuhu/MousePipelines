@@ -1,8 +1,11 @@
+### this script should read in all annotation files (annoFiles) and then output one large table per report
+### loading required libraries
+
 library(optparse)
 library(stringr)
 
-### add a list here so that I can use bcftoolsc merge for genotype pipeline 
-### this script should read in all annoFiles and then output one large table per report
+### custom function for reading VCF produced by tvc
+
 
 getSeqFields <- function(x,y){
   tmpFields <- NULL
@@ -19,6 +22,8 @@ getSeqFields <- function(x,y){
   return(tmpFields)
 }
 
+
+### parsing in variables
 
 option_list = list(
   make_option(c("-i", "--input"), type="character", default=NULL, 
@@ -39,6 +44,10 @@ if (is.null(opt$output)){
   print_help(opt_parser)
   stop("At least one argument must be supplied (output prefix).n", call.=FALSE)
 }
+
+
+
+### reading in each annotation file from annovar to create a per report annotation table
 
 setwd(paste0(opt$input))
 ### setwd("/mnt/DATA6/mouseData/vcfs/Auto_user_AUS5-141-MG_cho_202106_3TS_356_349")
@@ -81,5 +90,5 @@ setwd("/mnt/DATA6/mouseData/reportAnno/")
 write.table(fullAnnoTable, paste0(opt$output, "_anno.txt"), sep = "\t", col.names = TRUE, quote = FALSE, row.names = FALSE)
 ### notes left behind
 ### 2:GQ, 4:FDP, 8:FAO, 9:AF
-### the scirpt only writes a single reports annotations; just have another write the combined script
+### the script only writes a single reports annotations; just have another write the combined script
 
