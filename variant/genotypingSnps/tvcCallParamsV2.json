@@ -1,0 +1,103 @@
+{
+    "torrent_variant_caller": {
+        "snp_min_allele_freq": "0.02", 
+        "snp_strand_bias": "0.9", 
+        "hotspot_min_coverage": 15, 
+        "hotspot_min_cov_each_strand": 2, 
+        "position_bias": "0.75", 
+        "hotspot_min_allele_freq": "0", 
+        "report_ppa": 0, 
+        "mnp_min_variant_score": 5, 
+        "hotspot_strand_bias": "0.96", 
+        "hp_max_length": 7, 
+        "filter_insertion_predictions": "0.2", 
+        "indel_min_variant_score": 20, 
+        "indel_min_coverage": 15, 
+        "heavy_tailed": 3, 
+        "outlier_probability": "0.004", 
+        "position_bias_ref_fraction": "0.05", 
+        "snp_min_variant_score": 4, 
+        "indel_strand_bias_pval": "1.0", 
+        "data_quality_stringency": 11, 
+        "snp_min_cov_each_strand": 4, 
+        "hp_indel_hrun": [], 
+        "snp_strand_bias_pval": "0.25", 
+        "error_motifs": "", 
+        "mnp_strand_bias": "0.88", 
+        "snp_min_coverage": 40, 
+        "use_fd_param": 1, 
+        "mnp_strand_bias_pval": "0.25", 
+        "min_ratio_for_fd": "0.1", 
+        "hotspot_strand_bias_pval": "1.0", 
+        "hotspot_min_variant_score": 0, 
+        "max_flows_to_test": 10, 
+        "sse_prob_threshold": "1.0", 
+        "hp_del_len": [], 
+        "indel_strand_bias": "0.8", 
+        "downsample_to_coverage": 2000, 
+        "filter_unusual_predictions": "0.2", 
+        "indel_min_allele_freq": "0.02", 
+        "mnp_min_allele_freq": "0.015", 
+        "mnp_min_coverage": 15, 
+        "mnp_min_cov_each_strand": 6, 
+        "hp_ins_len": [], 
+        "prediction_precision": "0.78", 
+        "indel_min_cov_each_strand": 2, 
+        "filter_deletion_predictions": "0.2", 
+        "realignment_threshold": 1, 
+        "suppress_recalibration": 0, 
+        "position_bias_pval": "0.05", 
+        "use_position_bias": 1
+    }, 
+    "meta": {
+        "replaces": [
+            "somatic_low_stringency_540", 
+            "somatic_low_stringency_p1_540"
+        ], 
+        "ts_version": "5.14", 
+        "name": "Generic - S5/S5XL (540) - Somatic - Low Stringency", 
+        "tmapargs": "tmap mapall ... -J 25 --end-repair 15 --do-repeat-clip --context stage1 map4", 
+        "tooltip": "Parameter settings optimized for low frequency variants and minimum false negatives", 
+        "tvcargs": "tvc", 
+        "based_on": "ampliseq_somatic_lowstringency_540_parameters.json", 
+        "configuration": "somatic_low_stringency_540", 
+        "compatibility": {
+            "chip": [
+                "540"
+            ], 
+            "frequency": [
+                "somatic"
+            ], 
+            "stringency": [
+                "low"
+            ], 
+            "library": [
+                "wholegenome", 
+                "ampliseq", 
+                "targetseq"
+            ]
+        }
+    }, 
+    "long_indel_assembler": {
+        "min_indel_size": 4, 
+        "short_suffix_match": 5, 
+        "output_mnv": 0, 
+        "min_var_count": 5, 
+        "min_var_freq": "0.15", 
+        "kmer_len": 19, 
+        "max_hp_length": 8, 
+        "relative_strand_bias": "0.8"
+    }, 
+    "freebayes": {
+        "gen_min_coverage": 50, 
+        "allow_mnps": 1, 
+        "allow_complex": 1, 
+        "read_snp_limit": 8, 
+        "read_max_mismatch_fraction": "1.0", 
+        "allow_indels": 1, 
+        "min_mapping_qv": 5, 
+        "gen_min_alt_allele_freq": "0.025", 
+        "allow_snps": 1, 
+        "gen_min_indel_alt_allele_freq": "0.025"
+    }
+}
